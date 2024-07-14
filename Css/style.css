@@ -1,0 +1,252 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+/* #email{
+    width: 250px;
+}
+#profile_update_btn{
+    width: 300px;
+} */
+#upload_product_container{
+    width: 100%;
+    text-align: center;
+}
+#upload_product_btn {
+    margin: 15px 0;
+    border: 2px solid #24b4fb;
+    background-color: #24b4fb;
+    border-radius: 0.9em;
+    padding: 0.8em 1.2em 0.8em 1em;
+    transition: all ease-in-out 0.2s;
+    font-size: 16px;
+   }
+   
+#upload_product_btn span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+}
+   
+#upload_product_btn:hover {
+    background-color: #0071e2;
+}
+.hero {
+    text-align: center;
+    padding: 50px 0;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+.hero p {
+    font-size: 1.2em;
+}
+
+.cta-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.cta-button:hover {
+    background-color: #0056b3;
+}
+
+.product-list h1 {
+    font-size: 2em;
+    /* text-align: center; */
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    width: calc(33% - 40px);
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.product img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.product h3 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.product p {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.product button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.product button:hover {
+    background-color: #0056b3;
+}
+
+.cart, .order, .profile {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.cart-items, .order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cart-item, .order {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.cart-item img, .order img {
+    width: 100px;
+    height: auto;
+}
+
+.cart-summary {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.cart-summary h2 {
+    font-size: 1.5em;
+}
+
+.cart-summary button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cart-summary button:hover {
+    background-color: #0056b3;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form label {
+    font-size: 1.2em;
+}
+
+form input, form select {
+    width: 300px;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+footer {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    /* position: fixed; */
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+}
+
+/* utils */
+.text-capitalize{
+    text-transform: capitalize;
+}
