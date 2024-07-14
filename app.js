@@ -16,6 +16,26 @@ const userDp = document.getElementById("userDp");
 const product_card_container = document.getElementById("product_card_container");
 const myProducts = document.getElementById("myProducts");
 
+// Mobile Nav Element 
+const side_navbar = document.getElementById("side_navbar");
+const side_menu_open = document.getElementById("side_menu_open");
+const side_menu_close = document.getElementById("side_menu_close");
+
+
+window.sideBarOpen = sideBarOpen
+window.sideBarClose = sideBarClose
+
+function sideBarOpen(){
+  side_menu_open.style.display = "none"
+  side_navbar.style.display = "block"
+  side_menu_close.style.display = "block"
+}
+function sideBarClose(){
+  side_menu_close.style.display = "none"
+  side_navbar.style.display = "none"
+  side_menu_open.style.display = "block"
+}
+
 
 onAuthStateChanged(auth, (user) => {
   if (user) {

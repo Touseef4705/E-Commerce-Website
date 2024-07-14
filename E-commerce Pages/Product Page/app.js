@@ -17,6 +17,26 @@ import { auth ,
 } from "../../Utils/utils.js";
 
 
+// Mobile Nav Element 
+const side_navbar = document.getElementById("navbar-cta");
+const side_menu_open = document.getElementById("side_menu_open");
+const side_menu_close = document.getElementById("side_menu_close");
+
+
+window.sideBarOpen = sideBarOpen
+window.sideBarClose = sideBarClose
+
+function sideBarOpen(){
+  side_menu_open.style.display = "none"
+  side_navbar.style.display = "block"
+  side_menu_close.style.display = "block"
+}
+function sideBarClose(){
+  side_menu_close.style.display = "none"
+  side_navbar.style.display = "none"
+  side_menu_open.style.display = "block"
+}
+
 
 const user_logout = document.getElementById("user_logout");
 const user_login = document.getElementById("user_login");
