@@ -78,77 +78,87 @@ onAuthStateChanged(auth, (user) => {
 // console.log(productImag.file)
 const product_add_container = document.getElementById("product_add_container");
 
-product_add_container.addEventListener("submit" , (e)=>{
-    productSaveBtn.disable = true;
-    productSaveBtn.innerText = "Saving..."
-    e.preventDefault()
-    console.log(e)
+product_add_container.addEventListener("submit", (e) => {
+    e.preventDefault();
+    productSaveBtn.disabled = true;
+    productSaveBtn.innerText = "Saving...";
+
     const productInfo = {
-        productImage : e.target[0].files[0] ,
-        productTitle : e.target[1].value ,
-        productDesc : e.target[2].value ,
-        productAmout : e.target[3].value ,
-        creadtedBy : auth.currentUser.email ,
-        createtByUid : auth.currentUser.uid
-    }
-    // console.log(productInfo)
+        productImage1: e.target[0].files[0],
+        productImage2: e.target[1].files[0],
+        productImage3: e.target[2].files[0],
+        productTitle: e.target[3].value,
+        productDesc: e.target[4].value,
+        productAmount: e.target[5].value,
+        createdBy: auth.currentUser.email,
+        createdByUid: auth.currentUser.uid
+    };
 
-    // Upload Product Image
-    const imgRef = ref(storage , `Product Images/${productInfo.productImage.name}`);
-    uploadBytes(imgRef , productInfo.productImage).then(()=>{
-        console.log("Photo Upload Ho Gya h")
-        getDownloadURL(imgRef).then((url)=>{
-            console.log("Url Mil Gya " , url)
-            productInfo.productImage = url
+    const uploadImages = async () => {
+        const imageRefs = [
+            ref(storage, `Product Images/${productInfo.productImage1.name}`),
+            ref(storage, `Product Images/${productInfo.productImage2.name}`),
+            ref(storage, `Product Images/${productInfo.productImage3.name}`)
+        ];
 
-            const productDbRef = collection(db , "Products");
-            addDoc(productDbRef , productInfo).then(()=>{
-                console.log("Doc Add Ho Gya h")
-                uploadProductDone()
-                window.location.href = "/"
-            }).catch((err)=>{
-                productSaveBtn.disable = false;
-                productSaveBtn.innerText = "Save"
-                console.log(err)
-            })
+        const uploadTasks = [
+            uploadBytes(imageRefs[0], productInfo.productImage1),
+            uploadBytes(imageRefs[1], productInfo.productImage2),
+            uploadBytes(imageRefs[2], productInfo.productImage3)
+        ];
+
+        try {
+            await Promise.all(uploadTasks);
+            const downloadURLs = await Promise.all(imageRefs.map(getDownloadURL));
             
+            const productData = {
+                ...productInfo,
+                productImage1: downloadURLs[0],
+                productImage2: downloadURLs[1],
+                productImage3: downloadURLs[2]
+            };
 
-        }).catch((err)=>{
-            productSaveBtn.disable = false;
-            productSaveBtn.innerText = "Save"
-            console.log(err)
-        })
-    }).catch((err)=>{
-        productSaveBtn.disable = false;
-        productSaveBtn.innerText = "Save"
-        console.log(err)
-    })
-    
-    // console.log(productInfo)
-})
+            const productDbRef = collection(db, "Products");
+            await addDoc(productDbRef, productData);
+
+            console.log("Document added successfully");
+            uploadProductDone();
+            window.location.href = "/";
+        } catch (err) {
+            productSaveBtn.disabled = false;
+            productSaveBtn.innerText = "Save";
+            console.error("Error uploading images or adding document: ", err);
+        }
+    };
+
+    uploadImages();
+});
+
 
 async function getAllProducts(uid){
-    const q = query(collection(db , "Products"), where("createtByUid", "==", uid));
+    console.log(uid)
+    const q = query(collection(db , "Products"), where("createdByUid", "==", uid));
     const querySnapshot = await getDocs(q);
+    console.log(querySnapshot)
 
     querySnapshot.forEach((data) => {
-    //   console.log( "Product Data" ,data.data());
+      console.log( "Product Data" , data);
       const product = data.data();
       const {
             productTitle , 
             productDesc ,
-            productImage , 
-            productAmout ,
-            creadtedBy 
+            productImage1 , 
+            productAmount ,
+            createdBy 
         } =product
       const productCards = `
       <div class="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-            <img class="h-48 object-cover" style=width:300px src="${productImage}" alt="Product Image">
+            <img class="h-48 object-cover" style=width:300px src="${productImage1}" alt="Product Image">
             <div class="p-4">
                 <h2 class="text-2xl font-semibold mb-2 text-capitalize">${productTitle}</h2>
                 <p class="text-gray-700 mb-4">${productDesc}</p>
-                <p class="text-lg font-bold text-gray-900 mb-2">PKR : ${productAmout}</p>
-                <p class="text-gray-600 mb-4">Uploaded by: <br> ${creadtedBy}</p>
+                <p class="text-lg font-bold text-gray-900 mb-2">PKR : ${productAmount}</p>
+                <p class="text-gray-600 mb-4">Uploaded by: <br> ${createdBy}</p>
                 <div class="flex flex-wrap gap-5 justify-center">
                    <button class="px-6 py-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">Edit</button>
                    <button class="px-6 py-2 bg-red-600 text-white py-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300" onclick="dltProduct(this)">Delete</button>
@@ -159,7 +169,7 @@ async function getAllProducts(uid){
         productCardArr.push(productCards)
     });
     total_product_no.innerText = productCardArr.length
-  }
+}
 
 user_login.addEventListener("click" , ()=>{
 window.location.href = "/User Login And Signup/Login/index.html"

@@ -258,3 +258,116 @@ footer {
 .text-capitalize{
     text-transform: capitalize;
 }
+
+
+/* Product Details */
+#product_detail_page {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    background-color: #f4f4f4;
+    position: absolute;
+    top: 80px;
+}
+
+.product-container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 500px;
+    width: 100%;
+    padding: 20px;
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-images{
+    margin: 0 auto;
+    margin-top: 10px;
+    max-width: 450px;
+    height: 450px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+    border-radius: 20px;
+}
+.carousel-images img {
+    width: 430px;
+    /* display: none; */
+    margin: 0 auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-x: center;
+    display: block;
+    background-size: cover;
+}
+
+.carousel-images img.active {
+    display: none;
+}
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+.product-details {
+    padding: 20px;
+    text-align: center;
+}
+
+.product-title {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.product-amount {
+    font-size: 20px;
+    color: #0071e2;
+    margin: 10px 0;
+}
+
+.product-description {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin: 10px 0;
+}
+
+button.order-now {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+button.order-now:hover{
+    background-color: #007bff;
+}
