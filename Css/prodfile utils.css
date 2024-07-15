@@ -1,0 +1,235 @@
+#personal_info_container  {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    /* align-items: center;
+    height: 100vh; */
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#profilePage{
+    display: flex;
+    flex-direction: row;
+}
+#profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    /* margin-bottom: 20px; */
+    margin: 20px 0;
+    cursor: pointer;
+}
+
+.user-details p {
+    margin: 10px 0;
+}
+
+input[type="file"] {
+    margin-top: 10px;
+}
+
+#update_button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#update_button:hover {
+    background-color: #0056b3;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.modal{
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    transition: all 0.3s ease; /* Fade-in effect */
+}
+
+.modal.show {
+    display: block; /* Show the modal */
+    opacity: 1; /* Final opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 0 auto; /*15% from the top and centered*/
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 300px;
+    text-align: center;
+    border-radius: 8px;
+    transform: scale(1); /* Initial scale */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Pop-up effect */
+    opacity: 0; /* Initial opacity */
+}
+.modal-content > p{
+    color: black;
+    text-transform: capitalize;
+    font-size: 1.2rem;
+}
+.modal.show .modal-content {
+    transform: scale(1); /* Final scale */
+    opacity: 1; /* Final opacity */
+}
+.modal-content > img{
+    width: 200px;
+    margin: 20px auto;
+}
+
+.close-button {
+    color: #aaa;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.close-button:hover,
+.close-button:focus {
+    background-color: #0056b3;
+}
+
+
+/* Profile Modal */
+
+.profile-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.8); /* Black with opacity */
+    transition: opacity 0.3s ease; /* Fade-in effect */
+}
+
+.profile-modal.show {
+    display: block; /* Show the modal */
+    opacity: 1; /* Final opacity */
+}
+
+.profile-modal-content {
+    margin: auto;
+    padding: 0;
+    width: 40%; /* Could be more or less, depending on screen size */
+    max-width: 800px;
+    text-align: center;
+    padding-top: 20px;
+    animation: popUp 0.3s ease; /* Pop-up animation */
+}
+
+.profile-modal-content img {
+    width: 100%; /* Full width */
+    /* height: auto;  */
+    border-radius: 50%;/* Maintain aspect ratio */
+}
+
+.profile-close-button {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    cursor: pointer;
+}
+
+.profile-close-button:hover,
+.profile-close-button:focus {
+    color: #bbb;
+}
+
+@keyframes popUp {
+    from {transform: scale(0.7); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+}
+
+#userDp{
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+}
+
+/* Dp Updated */
+.update_modal{
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    transition: all 0.3s ease; /* Fade-in effect */
+}
+.update-modal-content {
+    color: black;
+    background-color: #fefefe;
+    margin: 0 auto; /*15% from the top and centered*/
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 300px;
+    text-align: center;
+    border-radius: 8px;
+    transform: scale(1); /* Initial scale */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Pop-up effect */
+    opacity: 1; /* Initial opacity */
+}
+.update-modal-content > p{
+    color: black;
+    text-transform: capitalize;
+    font-size: 1.2rem;
+}

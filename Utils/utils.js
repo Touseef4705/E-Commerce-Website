@@ -9,7 +9,8 @@ import { getFirestore  ,
    deleteDoc ,
    collection ,
    query ,
-   where 
+   where ,
+   updateDoc 
  } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 import { getStorage ,
    ref ,
@@ -59,5 +60,6 @@ export{
    addDoc ,
    deleteDoc ,
    query ,
-   where 
+   where ,
+   updateDoc 
 }

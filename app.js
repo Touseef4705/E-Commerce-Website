@@ -21,6 +21,10 @@ const side_navbar = document.getElementById("side_navbar");
 const side_menu_open = document.getElementById("side_menu_open");
 const side_menu_close = document.getElementById("side_menu_close");
 
+const profilePage = document.getElementById("profilePage");
+const disableProfilePage = document.getElementById("disableProfilePage");
+
+
 
 window.sideBarOpen = sideBarOpen
 window.sideBarClose = sideBarClose
@@ -48,10 +52,14 @@ onAuthStateChanged(auth, (user) => {
       user_login.style.display = "none"
       nav_disable.disable = false
       myProducts.style.display = "inline-block"
+      profilePage.style.display = "flex"
+      disableProfilePage.style.display = "none"
       // ...
     } else {
       user_logout.style.display = "none"
       myProducts.style.display = "none"
+      profilePage.style.display = "none"
+      disableProfilePage.style.display = "inline-block"
       user_login.style.display = "inline-block"
       console.log("User is signed out")
       //  window.location.href = "/User Login And Signup/Login/index.html";
@@ -82,22 +90,24 @@ async function getAllProducts(){
     const product = data.data();
     const {
       productTitle , 
-      productDesc
-       , productImage
-       , 
-       productAmout ,
-       creadtedBy} =product
+      productDesc, 
+      productImage, 
+      productAmout ,
+      creadtedBy} = product
     const productCards = `
-    <div class="max-w-sm bg-white rounded-lg shadow-md overflow-hidden">
+    <div id="${data.id}" class="max-w-sm bg-white rounded-lg shadow-md overflow-hidden">
     <img class="h-48 object-cover" style=width:300px src="${productImage}" alt="Product Image">
     <div class="p-4">
         <h2 class="text-2xl font-semibold mb-2 text-capitalize">${productTitle}</h2>
         <p class="text-gray-700 mb-4">${productDesc}</p>
         <p class="text-lg font-bold text-gray-900 mb-2">PKR : ${productAmout}</p>
-        <p class="text-gray-600 mb-4">Uploaded by: <br> ${creadtedBy}</p>
+        <div class="flex justify-between">
+          <p class="text-gray-600 mb-4">Uploaded by: <br> ${creadtedBy}</p>
+          <p class="text-gray-600 mb-4">199+ sold</p>
+        </div>  
         <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">Order Now</button>
-    </div>
-</div>`
+      </div>
+    </div>`
             product_card_container.innerHTML += productCards
   });
 

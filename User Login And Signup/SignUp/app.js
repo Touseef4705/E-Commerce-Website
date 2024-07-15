@@ -29,7 +29,7 @@ signup_user.addEventListener("click", async function() {
     };
 
     signup_user.disable = false;
-    signup_user.innerText = "Loading";
+    signup_user.innerText = "Loading...";
     
     if(user_dp_input.files[0] && user_first_name.value && user_email.value && user_password.value){
         if(user_password.value === user_repeat_password.value){

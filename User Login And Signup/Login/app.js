@@ -6,7 +6,7 @@ const login_user = document.getElementById("login_user");
 
 login_user.addEventListener("click" , ()=>{
   login_user.disable = true;
-  login_user.innerText = "Loading";
+  login_user.innerText = "Loading...";
     signInWithEmailAndPassword(auth, login_email.value, login_password.value)
   .then((userCredential) => {
     // Signed in 

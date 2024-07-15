@@ -8,6 +8,14 @@ body {
     color: #333;
 }
 
+#userDp{
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+}
+
 header {
     background-color: #007bff;
     color: white;

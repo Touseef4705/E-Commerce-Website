@@ -67,6 +67,7 @@ onAuthStateChanged(auth, (user) => {
         user_logout.style.display = "none"
         user_login.style.display = "inline-block"
         alert("User is signed out")
+        window.location.href = "/"
         //  window.location.href = "/User Login And Signup/Login/index.html";
         // User is signed out
         // ...
@@ -189,11 +190,12 @@ function getUserInfo(uid){
 }
 
 async function dltProduct(element) {
+    // console.log(element)
     try {
         // Find the product card element
         const productCard = element.closest('.max-w-sm');
         
-        // Extract the product title (assuming the product title is unique, otherwise use a unique identifier like product ID)
+        // // Extract the product title (assuming the product title is unique, otherwise use a unique identifier like product ID)
         const productTitle = productCard.querySelector('h2').innerText;
 
         // Create a query to find the product document based on the title
@@ -207,6 +209,7 @@ async function dltProduct(element) {
 
             // Remove the product card from the DOM
             productCard.remove();
+            total_product_no.innerText = productCardArr.length
         });
     } catch (e) {
         console.log(e);
