@@ -37,28 +37,27 @@ signup_user.addEventListener("click", async function() {
                 const userCredential = await createUserWithEmailAndPassword(auth, user_email.value, user_password.value);
                 const user = userCredential.user;
                 console.log(user.uid);
-                alert("Your Account Created")
 
                 const imgRef = ref(storage , `images/${user.uid}`)
                 if(user_dp_input.files[0]){
                     //Upload User Image
                     uploadBytes(imgRef , user_dp_input.files[0]).then(()=>{
-                        console.log("Upload Successfull")
+                        // console.log("Upload Successfull")
 
                         // Get url For User Upload Photo
                         getDownloadURL(imgRef)
                         .then((url) => {
-                            console.log(url)
+                            // console.log(url)
                             userInfo.user_dp_input = url
 
                             //Creat User Document Refrence
                             const userDbRef = doc(db , "users" , user.uid)
 
                             setDoc(userDbRef , userInfo).then(() => {
-                                console.log("User Object Update In Db");
+                                // console.log("User Object Update In Db");
                                 window.location.href = "../../index.html"
                             }).catch(()=>{
-                                console.log("User Object Not Update In Db")
+                                // console.log("User Object Not Update In Db")
                                 signup_user.disable = true;
                                 signup_user.innerText = "Sign Up";
                             })
@@ -74,9 +73,12 @@ signup_user.addEventListener("click", async function() {
                     signup_user.disable = true;
                     signup_user.innerText = "Sign Up";
                 }
+                alert("Your Account Created")
+
                 
             } catch(error){
-                console.log(error)
+                // console.log(error)
+                alert(error)
                 signup_user.disable = true;
                 signup_user.innerText = "Sign Up";
             }
@@ -91,5 +93,5 @@ signup_user.addEventListener("click", async function() {
         signup_user.innerText = "Sign Up";
     }
 
-    console.log( "UserInfo=>" , userInfo)
+    // console.log( "UserInfo=>" , userInfo)
 });

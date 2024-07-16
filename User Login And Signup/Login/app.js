@@ -12,12 +12,14 @@ login_user.addEventListener("click" , ()=>{
     // Signed in 
     const user = userCredential.user;
     window.location.href = "../../index.html"
+    alert("Welcome To Our Website")
     // ...
   })
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message + errorCode;
     console.log(errorMessage)
+    alert(errorMessage)
     login_user.disable = false;
     login_user.innerText = "Login";
   });
