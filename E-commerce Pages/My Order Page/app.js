@@ -6,7 +6,6 @@ import { auth, onAuthStateChanged, signOut, collection, query, where, getDocs, d
  const user_login = document.getElementById("user_login");
  const nav_disable = document.querySelectorAll("nav_disable");
  const userDp = document.getElementById("userDp");
- const product_card_container = document.getElementById("product_card_container");
  const myProducts = document.getElementById("myProducts");
  
  // Mobile Nav Element 
@@ -41,6 +40,7 @@ import { auth, onAuthStateChanged, signOut, collection, query, where, getDocs, d
      const uid = user.uid;
        // console.log(uid)
        getUserInfo(uid)
+       fetchUserOrders(uid)
        user_logout.style.display = "inline-block"
        user_login.style.display = "none"
        nav_disable.disable = false
@@ -89,6 +89,7 @@ function fetchUserOrders(uid) {
     getDocs(q).then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             const order = doc.data();
+            console.log("doc" , doc.data())
             displayOrder(order);
         });
     }).catch((error) => {
@@ -105,6 +106,7 @@ function displayOrder(order) {
         <p class="text-gray-700 mb-4">${order.productDesc}</p>
         <img src="${order.productImage1}" alt="Product Image" class="w-full h-64 object-cover rounded-lg mb-4">
         <p class="text-gray-500">Order Date: ${order.timestamp.toDate().toLocaleDateString()}</p>
-    `;
+         <p class="text-gray-500">Buyer Id: ${order.buyerId}</p>
+    `; console.log(order)
     ordersList.appendChild(orderElement);
 }
