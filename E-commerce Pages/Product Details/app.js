@@ -1,4 +1,11 @@
-import { auth, onAuthStateChanged, signOut, doc, getDoc, setDoc, db } from "../../Utils/utils.js";
+import { auth, 
+onAuthStateChanged, 
+signOut, 
+doc, 
+getDoc, 
+setDoc, 
+db 
+} from "../../Utils/utils.js";
 
 const user_logout = document.getElementById("user_logout");
 const user_login = document.getElementById("user_login");
