@@ -11,24 +11,46 @@
     transition: transform 0.5s ease-in-out;
 }
 
+
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
-    top: 0;
+    z-index: 100;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
     overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
 }
 
-.modal-content {
+.modal_content {
     display: block;
-    margin: auto;
-    max-width: 80%; /* Adjust as needed */
-    max-height: 80%; /* Adjust as needed */
-    object-fit: contain;
+    position: relative;
+    background-color: #fefefe;
+    border-radius: 5px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    top: 10px;
+    cursor: pointer;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
     cursor: pointer;
 }
 

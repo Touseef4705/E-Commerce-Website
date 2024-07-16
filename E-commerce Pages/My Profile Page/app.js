@@ -105,12 +105,16 @@ function getUserInfo(uid){
 // window.updateProfile = updateProfile
 const update_btn = document.getElementById('update_button')
 update_btn.addEventListener('click', function() {
+    update_btn.innerText = "Updating Profile" ;
+    update_btn.disable = true ;
     const fileInput = document.getElementById('profile-picture-input');
     const file = fileInput.files[0];
     if (file) {
         updateProfile(`${auth.currentUser.uid}`, file);
     } else {
         openModal()
+        update_btn.innerText = "Update Profile Picture" ;
+        update_btn.disable = false ;
         // alert('Please select an image file to update your profile picture.');
     }
 });
