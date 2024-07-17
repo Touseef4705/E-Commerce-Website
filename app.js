@@ -96,7 +96,7 @@ async function getAllProducts(){
       createdBy} = product
       const productCards = `
       <div id="${data.id}" onclick="productDetails(this)" class="max-w-sm bg-white rounded-lg shadow-md overflow-hidden" data-id="${data.id}">
-          <img class="h-48 object-cover" style="width:300px" src="${productImage1}" alt="Product Image">
+          <img class="h-48 object-cover" style="width:100%;" src="${productImage1}" alt="Product Image">
           <div class="p-4">
               <h2 class="text-2xl font-semibold mb-2 text-capitalize">${productTitle}</h2>
               <p class="text-gray-700 mb-4">${productDesc}</p>

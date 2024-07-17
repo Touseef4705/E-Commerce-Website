@@ -315,6 +315,7 @@ footer {
 
 .carousel-images img.active {
     display: none;
+    
 }
 
 button.prev, button.next {
