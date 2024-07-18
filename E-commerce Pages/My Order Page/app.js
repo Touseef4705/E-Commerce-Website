@@ -1,13 +1,14 @@
-import { auth, 
-  onAuthStateChanged, 
-  signOut, 
-  doc, 
-  getDoc, 
-  collection , 
-  query ,
-  where , 
-  db, 
-  getDocs } from "../../Utils/utils.js";
+import {
+  auth,
+  onAuthStateChanged,
+  signOut,
+  doc,
+  getDoc,
+  getDocs,
+  db,
+  deleteDoc,
+  collection,
+} from "../../Utils/utils.js";
 
 const user_logout = document.getElementById("user_logout");
 const user_login = document.getElementById("user_login");
@@ -23,8 +24,8 @@ const side_menu_close = document.getElementById("side_menu_close");
 const profilePage = document.getElementById("profilePage");
 const disableProfilePage = document.getElementById("disableProfilePage");
 
-window.sideBarOpen = sideBarOpen
-window.sideBarClose = sideBarClose
+window.sideBarOpen = sideBarOpen;
+window.sideBarClose = sideBarClose;
 
 function sideBarOpen() {
   side_menu_open.style.display = "none";
@@ -48,7 +49,7 @@ onAuthStateChanged(auth, (user) => {
     myProducts.style.display = "inline-block";
     profilePage.style.display = "flex";
     disableProfilePage.style.display = "none";
-    fetchUserOrders(uid)
+    loadOrders(uid);
   } else {
     user_logout.style.display = "none";
     myProducts.style.display = "none";
@@ -78,29 +79,78 @@ function getUserInfo(uid) {
   });
 }
 
-function fetchUserOrders(uid) {
+function loadOrders(uid) {
   const ordersRef = collection(db, "orders");
-  const q = query(ordersRef, where("buyerId", "==", uid));
-  
-  getDocs(q).then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-          const order = doc.data();
-          displayOrder(order);
-      });
+  getDocs(ordersRef).then((querySnapshot) => {
+    const ordersContainer = document.getElementById("orders");
+    querySnapshot.forEach((doc) => {
+      const order = doc.data();
+      if (order.buyerId === uid) {
+        const orderDiv = document.createElement("div");
+        orderDiv.classList.add("order-item", "p-4", "bg-gray-100", "rounded-lg", "flex", "items-center", "justify-between");
+
+        const itemDetailsDiv = document.createElement("div");
+        itemDetailsDiv.classList.add("flex", "items-center");
+
+        const itemImage = document.createElement("img");
+        itemImage.src = order.productImage1;
+        itemImage.classList.add("w-16", "h-16", "rounded-lg", "mr-4");
+
+        const itemInfoDiv = document.createElement("div");
+
+        const itemTitle = document.createElement("h3");
+        itemTitle.classList.add("text-lg", "font-bold");
+        itemTitle.innerText = order.productTitle;
+
+        const itemAmount = document.createElement("p");
+        itemAmount.classList.add("text-gray-600");
+        itemAmount.innerText = `PKR: ${order.productAmount}`;
+
+        const quantityDiv = document.createElement("div");
+        quantityDiv.classList.add("flex", "items-center", "mt-2");
+
+        const quantityLabel = document.createElement("label");
+        quantityLabel.classList.add("mr-2");
+        quantityLabel.innerText = "Quantity:";
+
+        const quantityValue = document.createElement("span");
+        quantityValue.innerText = order.quantity || "1";
+        quantityValue.classList.add("w-16", "p-1", "border", "rounded");
+
+        quantityDiv.appendChild(quantityLabel);
+        quantityDiv.appendChild(quantityValue);
+
+        itemInfoDiv.appendChild(itemTitle);
+        itemInfoDiv.appendChild(itemAmount);
+        itemInfoDiv.appendChild(quantityDiv);
+
+        itemDetailsDiv.appendChild(itemImage);
+        itemDetailsDiv.appendChild(itemInfoDiv);
+
+        const cancelButton = document.createElement("button");
+        cancelButton.classList.add("bg-red-500", "text-white", "px-4", "py-2", "rounded-lg", "hover:bg-red-700");
+        cancelButton.innerText = "Cancel Order";
+        cancelButton.addEventListener("click", () => {
+          cancelOrder(doc.id);
+        });
+
+        orderDiv.appendChild(itemDetailsDiv);
+        orderDiv.appendChild(cancelButton);
+
+        ordersContainer.appendChild(orderDiv);
+      }
+    });
   }).catch((error) => {
-      console.log("Error getting orders: ", error);
+    alert("Error loading orders:", error);
   });
 }
 
-function displayOrder(order) {
-  const orderElement = document.createElement('div');
-  orderElement.classList.add('p-5', 'bg-gray-100', 'rounded-lg', 'shadow-md');
-  orderElement.innerHTML = `
-      <h2 class="text-2xl font-semibold mb-2">${order.productTitle}</h2>
-      <p class="text-xl text-green-600 font-semibold mb-2">PKR: ${order.productAmount}</p>
-      <p class="text-gray-700 mb-4">${order.productDesc}</p>
-      <img src="${order.productImage1}" alt="Product Image" class="w-full h-64 object-cover rounded-lg mb-4">
-      <p class="text-gray-500">Order Date: ${order.timestamp.toDate().toLocaleDateString()}</p>
-  `;
-  ordersList.appendChild(orderElement);
+function cancelOrder(orderId) {
+  const orderRef = doc(db, "orders", orderId);
+  deleteDoc(orderRef).then(() => {
+    alert("Order canceled successfully!");
+    location.reload();
+  }).catch((error) => {
+    alert("Error canceling order:", error);
+  });
 }

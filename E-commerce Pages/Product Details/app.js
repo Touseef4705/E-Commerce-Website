@@ -1,10 +1,11 @@
-import { auth, 
-onAuthStateChanged, 
-signOut, 
-doc, 
-getDoc, 
-setDoc, 
-db 
+import {
+  auth,
+  onAuthStateChanged,
+  signOut,
+  doc,
+  getDoc,
+  setDoc,
+  db
 } from "../../Utils/utils.js";
 
 const user_logout = document.getElementById("user_logout");
@@ -12,7 +13,7 @@ const user_login = document.getElementById("user_login");
 const nav_disable = document.querySelectorAll("nav_disable");
 const userDp = document.getElementById("userDp");
 const myProducts = document.getElementById("myProducts");
-const orderButton = document.querySelector(".bg-blue-600.text-white.px-6.py-3.rounded-lg.hover\\:bg-blue-800");
+const addToCartButton = document.querySelector(".bg-blue-600.text-white.px-6.py-3.rounded-lg.hover\\:bg-blue-800");
 
 // Mobile Nav Element
 const side_navbar = document.getElementById("side_navbar");
@@ -22,8 +23,8 @@ const side_menu_close = document.getElementById("side_menu_close");
 const profilePage = document.getElementById("profilePage");
 const disableProfilePage = document.getElementById("disableProfilePage");
 
-window.sideBarOpen = sideBarOpen
-window.sideBarClose = sideBarClose
+window.sideBarOpen = sideBarOpen;
+window.sideBarClose = sideBarClose;
 
 function sideBarOpen() {
   side_menu_open.style.display = "none";
@@ -93,9 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('productImage2').src = product.productImage2;
       document.getElementById('productImage3').src = product.productImage3;
 
-      // Attach event listener to the "Order Now" button
-      orderButton.addEventListener("click", () => {
-        placeOrder(productId, product);
+      // Attach event listener to the "Add to Cart" button
+      addToCartButton.addEventListener("click", () => {
+        addToCart(productId, product);
       });
     }).catch((error) => {
       alert("Error fetching product details:", error);
@@ -156,11 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
   setupImageModal();
 });
 
-function placeOrder(productId, product) {
+function addToCart(productId, product) {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const uid = user.uid;
-      const orderData = {
+      const cartData = {
         productId: productId,
         buyerId: uid,
         productTitle: product.productTitle,
@@ -169,15 +170,16 @@ function placeOrder(productId, product) {
         productImage1: product.productImage1,
         timestamp: new Date()
       };
-      const orderRef = doc(db, "orders", `${productId}_${uid}`);
-      setDoc(orderRef, orderData).then(() => {
-        alert("Order placed successfully!");
-        // Optionally redirect the user to a confirmation page or update the UI
+      const cartRef = doc(db, "cart", `${productId}_${uid}`);
+      setDoc(cartRef, cartData).then(() => {
+        alert("Product added to cart successfully!");
+        // Optionally redirect the user to the cart page
+        // window.location.href = "/cart.html";
       }).catch((error) => {
-        alert("Error placing order:", error);
+        alert("Error adding product to cart:", error);
       });
     } else {
-      alert("You need to log in to place an order.");
+      alert("You need to log in to add products to the cart.");
     }
   });
 }
