@@ -24,7 +24,7 @@ main {
     overflow: hidden;
     width: 250px; /* Smaller card size */
     transition: transform 0.3s;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .product-card:hover {
@@ -64,3 +64,47 @@ main {
 
 
 
+.product-card {
+    max-width: 12em;
+    background-color: #fff;
+    padding: 1em;
+    box-shadow: 0 5px 5px #e1e1e1;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .product-card img {
+    max-width: 100%;
+  }
+  .product-card h4 {
+    font-size: 1.3em;
+    margin: 0.5em 0;
+  }
+  .product-card div {
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .product-card button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1em;
+  }
+  .product-card:hover {
+    background-color: rgb(235, 239, 243);
+    color: #000000;
+  }
+  .product-card:hover button {
+    border: 1px solid black;
+    color: #000;
+    background-color: #fff;
+  }
+  @media screen and (max-width: 576px) {
+    .product-card {
+      font-size: 0.9em;
+    }
+  }
+  
