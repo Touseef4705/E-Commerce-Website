@@ -351,6 +351,7 @@ onAuthStateChanged(auth, (user) => {
     myProducts.style.display = "inline-block"
     profilePage.style.display = "flex"
     disableProfilePage.style.display = "none"
+    console.log("User he")
   } else {
     user_logout.style.display = "none"
     myProducts.style.display = "none"
