@@ -385,7 +385,7 @@ async function getAllProducts(){
             <img src="${productImage1}" alt="">
             <h4>${productTitle}</h4>
             <div>
-              <span>PKR: ${productAmount}</span>
+              <span>$ ${productAmount}</span>
               <button id="${data.id}" data-id="${data.id}" onclick="productDetails(this)"><i class="fa-solid fa-arrow-right-to-bracket" style="padding: 8px;"></i></button>
             </div>
           </div>`;
