@@ -1,3 +1,5 @@
+import { showError } from "../../Utils/error.js";
+import { showSuccess } from "../../Utils/success.js";
 import {
   auth,
   onAuthStateChanged,
@@ -8,12 +10,13 @@ import {
   db
 } from "../../Utils/utils.js";
 
+
 const user_logout = document.getElementById("user_logout");
 const user_login = document.getElementById("user_login");
 const nav_disable = document.querySelectorAll("nav_disable");
 const userDp = document.getElementById("userDp");
 const myProducts = document.getElementById("myProducts");
-const addToCartButton = document.querySelector(".bg-blue-600.text-white.px-6.py-3.rounded-lg.hover\\:bg-blue-800");
+const addToCartButton = document.querySelector(".bg-orange-400.text-white.px-6.py-3.rounded-lg.hover\\:bg-orange-600");
 
 // Mobile Nav Element
 const side_navbar = document.getElementById("side_navbar");
@@ -64,7 +67,7 @@ user_login.addEventListener("click", () => {
 
 user_logout.addEventListener("click", () => {
   signOut(auth).then(() => {
-    alert("Sign-out successful.");
+    showError("Sign-out successful.");
   }).catch((error) => {
     console.log(error);
   });
@@ -89,17 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const product = data.data();
       document.getElementById('productTitle').innerText = product.productTitle;
       document.getElementById('productAmount').innerText = `$ ${product.productAmount}`;
-      document.getElementById('productDesc').innerText = product.productDesc;
+      document.getElementById('productCategory').innerText = product.category;
       document.getElementById('productImage1').src = product.productImage1;
       document.getElementById('productImage2').src = product.productImage2;
       document.getElementById('productImage3').src = product.productImage3;
-
+      document.getElementById('productCreated').innerText = product.createdBy;
+      document.getElementById('productDesc').innerText = product.productDesc
+      
       // Attach event listener to the "Add to Cart" button
       addToCartButton.addEventListener("click", () => {
         addToCart(productId, product);
       });
     }).catch((error) => {
-      alert("Error fetching product details:", error);
+      showError("Error fetching product details:", error);
     });
   }
 
@@ -108,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (productId) {
     fetchProductDetails(productId);
   } else {
-    alert("No product ID found in the URL.");
+    showError("No product ID found in the URL.");
   }
 
   let slideIndex = 0;
@@ -172,14 +177,14 @@ function addToCart(productId, product) {
       };
       const cartRef = doc(db, "cart", `${productId}_${uid}`);
       setDoc(cartRef, cartData).then(() => {
-        alert("Product added to cart successfully!");
+        showSuccess("Product added to cart successfully!")
         // Optionally redirect the user to the cart page
         // window.location.href = "/cart.html";
       }).catch((error) => {
-        alert("Error adding product to cart:", error);
+        showError("Error adding product to cart:", error)
       });
     } else {
-      alert("You need to log in to add products to the cart.");
+      showError("You need to log in to add products to the cart.");
     }
   });
 }

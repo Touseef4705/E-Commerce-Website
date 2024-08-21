@@ -8,6 +8,11 @@ import { auth ,
   collection,
   addDoc
 } from "./Utils/utils.js";
+import{
+  showError
+} from "./Utils/error.js"
+import { showSuccess } from "./Utils/success.js";
+
 
 // const fakeProductsArray = [
 //   {
@@ -311,6 +316,7 @@ import { auth ,
 //     }
 //   }
 // ]
+// console.log(showError)
 
 const user_logout = document.getElementById("user_logout");
 const user_login = document.getElementById("user_login");
@@ -367,7 +373,8 @@ user_login.addEventListener("click" , ()=>{
 })
 user_logout.addEventListener("click" , () => {
   signOut(auth).then(() => {
-    console.log("Sign-out successful.")
+    showSuccess("Sign-out successful.")
+    // console.log("Sign-out successful.")
   }).catch((error) => {
     console.log(error)
   });
@@ -381,14 +388,13 @@ async function getAllProducts(){
     const product = data.data();
     const { productTitle , productDesc, productImage1, productAmount, createdBy } = product
     const productCards = `
-          <div class="product-card" >
-            <img src="${productImage1}" alt="">
-            <h4>${productTitle}</h4>
-            <div>
-              <span>$ ${productAmount}</span>
-              <button id="${data.id}" data-id="${data.id}" onclick="productDetails(this)"><i class="fa-solid fa-arrow-right-to-bracket" style="padding: 8px;"></i></button>
-            </div>
-          </div>`;
+    <div class="product-main-card"  id="${data.id}" data-id="${data.id}" onclick="productDetails(this)" >
+      <img src=${productImage1} alt="Product Image" class="product-image">
+      <div class="product-info">
+        <h2 class="product-title">${productTitle}</h2>
+        <div class="product-price">$${productAmount}</div>
+      </div>
+    </div>`;
     product_card_container.innerHTML += productCards;  
   });
 

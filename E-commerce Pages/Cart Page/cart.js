@@ -11,6 +11,9 @@ import {
     updateDoc,
     deleteDoc,
   } from "../../Utils/utils.js";
+
+import {showSuccess} from "../../Utils/success.js"
+import {showError} from "../../Utils/error.js"
   
   const user_logout = document.getElementById("user_logout");
   const user_login = document.getElementById("user_login");
@@ -60,6 +63,7 @@ import {
       disableProfilePage.style.display = "inline-block";
       user_login.style.display = "inline-block";
       console.log("User is signed out");
+      showError("You need to log in to view your cart.");
     }
   });
   
@@ -69,7 +73,7 @@ import {
   
   user_logout.addEventListener("click", () => {
     signOut(auth).then(() => {
-      alert("Sign-out successful.");
+      showSuccess("Sign-out successful.");
     }).catch((error) => {
       console.log(error);
     });
@@ -78,187 +82,171 @@ import {
   function getUserInfo(uid) {
     const docRef = doc(db, "users", uid);
     getDoc(docRef).then((data) => {
-      userDp.src = data.data().user_dp_input;
+        userDp.src = data.data().user_dp_input;
     });
-  }
-  
-  function loadCartItems(uid) {
+}
+
+function loadCartItems(uid) {
     const cartRef = collection(db, "cart");
     getDocs(cartRef).then((querySnapshot) => {
-      const cartItemsContainer = document.getElementById("cartItems");
-      querySnapshot.forEach((doc) => {
-        const cartItem = doc.data();
-        if (cartItem.buyerId === uid) {
-          const cartItemDiv = document.createElement("div");
-          cartItemDiv.classList.add("cart-item", "p-4", "bg-gray-100", "rounded-lg", "flex", "items-center", "justify-between");
-  
-          const itemDetailsDiv = document.createElement("div");
-          itemDetailsDiv.classList.add("flex", "items-center");
-  
-          const itemImage = document.createElement("img");
-          itemImage.src = cartItem.productImage1;
-          itemImage.classList.add("w-16", "h-16", "rounded-lg", "mr-4");
-  
-          const itemInfoDiv = document.createElement("div");
-  
-          const itemTitle = document.createElement("h3");
-          itemTitle.classList.add("text-lg", "font-bold");
-          itemTitle.innerText = cartItem.productTitle;
-  
-          const itemAmount = document.createElement("p");
-          itemAmount.classList.add("text-gray-600");
-          itemAmount.innerText = `PKR: ${cartItem.productAmount}`;
-  
-          const quantityDiv = document.createElement("div");
-          quantityDiv.classList.add("flex", "items-center", "mt-2");
-  
-          const quantityLabel = document.createElement("label");
-          quantityLabel.classList.add("mr-2");
-          quantityLabel.innerText = "Quantity:";
-  
-          const quantityInput = document.createElement("input");
-          quantityInput.type = "number";
-          quantityInput.min = "1";
-          quantityInput.value = cartItem.quantity || "1";
-          quantityInput.classList.add("w-16", "p-1", "border", "rounded");
-  
-          quantityDiv.appendChild(quantityLabel);
-          quantityDiv.appendChild(quantityInput);
-  
-          itemInfoDiv.appendChild(itemTitle);
-          itemInfoDiv.appendChild(itemAmount);
-          itemInfoDiv.appendChild(quantityDiv);
-  
-          itemDetailsDiv.appendChild(itemImage);
-          itemDetailsDiv.appendChild(itemInfoDiv);
-  
-          const removeButton = document.createElement("button");
-          removeButton.classList.add("bg-red-500", "text-white", "px-4", "py-2", "rounded-lg", "hover:bg-red-700");
-          removeButton.innerText = "Remove";
-          removeButton.addEventListener("click", () => {
-            removeCartItem(doc.id);
-          });
-  
-          const orderButton = document.createElement("button");
-          orderButton.classList.add("bg-green-500", "text-white", "px-4", "py-2", "rounded-lg", "hover:bg-green-700", "ml-2");
-          orderButton.innerText = "Order";
-          orderButton.addEventListener("click", () => {
-            placeOrder(cartItem, doc.id, uid);
-          });
-  
-          cartItemDiv.appendChild(itemDetailsDiv);
-          cartItemDiv.appendChild(removeButton);
-          cartItemDiv.appendChild(orderButton);
-  
-          cartItemsContainer.appendChild(cartItemDiv);
-  
-          quantityInput.addEventListener("change", () => {
-            updateCartItemQuantity(doc.id, quantityInput.value, cartItem.productAmount);
-          });
-        }
-      });
+        const cartItemsContainer = document.getElementById("cartItems");
+        let cartHtml = `
+        <section class="h-full">
+            <div class="container mx-auto py-5 h-full">
+                <div class="flex justify-center items-center h-full">
+                    <div class="w-10/12">
+                        <div class="flex justify-between items-center mb-4">
+                            
+                        </div>`;
+
+        querySnapshot.forEach((doc) => {
+            const cartItem = doc.data();
+            if (cartItem.buyerId === uid) {
+              cartHtml += `
+              <div id="cartItem-${doc.id}" class="bg-white rounded-lg shadow mb-4">
+                  <div class="p-4">
+                      <div class="flex flex-wrap md:flex-nowrap overflow-auto justify-between items-center">
+                          <div class="w-full md:w-1/5 mb-4 md:mb-0">
+                              <img src="${cartItem.productImage1}" class="w-full rounded-lg" alt="${cartItem.productTitle}">
+                          </div>
+                          <div class="w-full md:w-1/4 mb-4 md:mb-0 text-center md:text-left">
+                              <p class="font-normal mb-2">${cartItem.productTitle}</p>
+                              <p><span class="text-gray-600">Amount:</span> $ ${cartItem.productAmount}</p>
+                          </div>
+                          <div class="flex justify-center md:justify-start items-center w-full md:w-1/5 mb-4 md:mb-0">
+                              <input id="quantity-${doc.id}" min="1" name="quantity" value="${cartItem.quantity || 1}" type="number"
+                                  class="form-input border border-gray-200 rounded-md form-input-sm w-16 mx-2 text-center"
+                                  onchange="updateCartItemQuantity('${doc.id}', this.value, ${cartItem.productAmount})"/>
+                          </div>
+                          <div class="w-full md:w-1/5 mb-4 md:mb-0 text-center">
+                              <h5 id="totalAmount-${doc.id}" class="mb-0">$ ${cartItem.productAmount * (cartItem.quantity || 1)}</h5>
+                          </div>
+                          <div class="w-full md:w-1/12 text-center md:text-right">
+                              <a href="#!" class="text-red-500" onclick="removeCartItem('${doc.id}')"><i class="fas fa-trash fa-lg"></i></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          `;
+          
+            }
+        });
+
+      
+
+        cartItemsContainer.innerHTML = cartHtml;
     }).catch((error) => {
-      alert("Error loading cart items:", error);
+        showError("Error loading cart items: " + error);
     });
-  }
-  
-  function updateCartItemQuantity(cartItemId, quantity, price) {
+}
+
+window.updateCartItemQuantity = updateCartItemQuantity
+function updateCartItemQuantity(cartItemId, quantity, price) {
     const cartRef = doc(db, "cart", cartItemId);
     const updatedData = {
-      quantity: quantity,
-      totalAmount: quantity * price
+        quantity: quantity,
+        totalAmount: quantity * price
     };
+
     updateDoc(cartRef, updatedData).then(() => {
-      alert("Cart item quantity updated successfully!");
-      location.reload();
+        const totalAmountElement = document.querySelector(`#totalAmount-${cartItemId}`);
+        totalAmountElement.textContent = `$ ${quantity * price}`;
     }).catch((error) => {
-      alert("Error updating cart item quantity:", error);
+        showError("Error updating cart item quantity:", error);
     });
-  }
-  
-  function removeCartItem(cartItemId) {
+}
+
+window.removeCartItem = removeCartItem
+function removeCartItem(cartItemId) {
     const cartRef = doc(db, "cart", cartItemId);
     deleteDoc(cartRef).then(() => {
-      alert("Cart item removed successfully!");
-      location.reload();
+        showSuccess("Cart item removed successfully!");
+        const cartItemElement = document.getElementById(`cartItem-${cartItemId}`);
+        if (cartItemElement) {
+            cartItemElement.remove();
+        }
     }).catch((error) => {
-      alert("Error removing cart item:", error);
+        showError("Error removing cart item:", error);
     });
-  }
-  
-  function placeOrder(cartItem, cartItemId, uid) {
+}
+
+window.placeOrder = placeOrder
+function placeOrder(cartItem, cartItemId, uid) {
     const orderData = {
-      productId: cartItem.productId,
-      buyerId: uid,
-      productTitle: cartItem.productTitle,
-      productAmount: cartItem.productAmount,
-      productDesc: cartItem.productDesc,
-      productImage1: cartItem.productImage1,
-      quantity: cartItem.quantity || 1,
-      totalAmount: cartItem.totalAmount || cartItem.productAmount,
-      timestamp: new Date()
+        productId: cartItem.productId,
+        buyerId: uid,
+        productTitle: cartItem.productTitle,
+        productAmount: cartItem.productAmount,
+        productDesc: cartItem.productDesc,
+        productImage1: cartItem.productImage1,
+        quantity: cartItem.quantity || 1,
+        totalAmount: cartItem.totalAmount || cartItem.productAmount,
+        timestamp: new Date()
     };
     const orderRef = doc(db, "orders", `${cartItem.productId}_${uid}`);
     setDoc(orderRef, orderData).then(() => {
-      deleteDoc(doc(db, "cart", cartItemId)).then(() => {
-        alert("Order placed successfully!");
-        location.reload();
-      }).catch((error) => {
-        alert("Error removing item from cart:", error);
-      });
-    }).catch((error) => {
-      alert("Error placing order:", error);
-    });
-  }
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    const checkoutButton = document.getElementById("checkoutButton");
-    if (checkoutButton) {
-      checkoutButton.addEventListener("click", () => {
-        processCheckout();
-      });
-    }
-  });
-  
-  function processCheckout() {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uid = user.uid;
-        const cartRef = collection(db, "cart");
-        getDocs(cartRef).then((querySnapshot) => {
-          const orderPromises = [];
-          querySnapshot.forEach((doc) => {
-            const cartItem = doc.data();
-            if (cartItem.buyerId === uid) {
-              const orderData = {
-                productId: cartItem.productId,
-                buyerId: uid,
-                productTitle: cartItem.productTitle,
-                productAmount: cartItem.productAmount,
-                productDesc: cartItem.productDesc,
-                productImage1: cartItem.productImage1,
-                quantity: cartItem.quantity || 1,
-                totalAmount: cartItem.totalAmount || cartItem.productAmount,
-                timestamp: new Date()
-              };
-              const orderRef = doc(db, "orders", `${cartItem.productId}_${uid}`);
-              orderPromises.push(setDoc(orderRef, orderData));
-              orderPromises.push(deleteDoc(doc.ref)); // Remove item from cart after placing order
-            }
-          });
-  
-          Promise.all(orderPromises).then(() => {
-            alert("Checkout successful! Your order has been placed.");
+        deleteDoc(doc(db, "cart", cartItemId)).then(() => {
+            showSuccess("Order placed successfully!");
             location.reload();
-          }).catch((error) => {
-            alert("Error during checkout:", error);
-          });
         }).catch((error) => {
-          alert("Error processing checkout:", error);
+            showError("Error removing item from cart:", error);
         });
-      } else {
-        alert("You need to log in to checkout.");
-      }
+    }).catch((error) => {
+        showError("Error placing order:", error);
     });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const checkoutButton = document.getElementById("checkoutButton");
+  if (checkoutButton) {
+      checkoutButton.addEventListener("click", () => {
+          processCheckout();
+      });
+  } else {
+      console.error("Sorry, checkout button not found.");
   }
-  
+});
+
+function processCheckout() {
+  onAuthStateChanged(auth, (user) => {
+      if (user) {
+          const uid = user.uid;
+          const cartRef = collection(db, "cart");
+          getDocs(cartRef).then((querySnapshot) => {
+              const orderPromises = [];
+              querySnapshot.forEach((docSnapshot) => {
+                  const cartItem = docSnapshot.data();
+                  if (cartItem.buyerId === uid) {
+                      const orderData = {
+                          productId: cartItem.productId,
+                          buyerId: uid,
+                          productTitle: cartItem.productTitle,
+                          productAmount: cartItem.productAmount,
+                          productDesc: cartItem.productDesc,
+                          productImage1: cartItem.productImage1,
+                          quantity: cartItem.quantity || 1,
+                          totalAmount: cartItem.totalAmount || cartItem.productAmount,
+                          timestamp: new Date()
+                      };
+                      const orderRef = doc(db, "orders", `${cartItem.productId}_${uid}`);
+                      orderPromises.push(setDoc(orderRef, orderData));
+                      orderPromises.push(deleteDoc(doc(db, "cart", docSnapshot.id))); // Corrected document reference
+                  }
+              });
+
+              Promise.all(orderPromises).then(() => {
+                  showSuccess("Checkout successful! Your order has been placed.");
+                  location.reload();
+              }).catch((error) => {
+                  showError("Error during checkout: " + error.message);
+                  console.error(error);
+              });
+          }).catch((error) => {
+              showError("Error processing checkout: " + error.message);
+              console.error(error);
+          });
+      } else {
+          showError("You need to log in to checkout.");
+      }
+  });
+}

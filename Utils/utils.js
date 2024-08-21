@@ -25,12 +25,12 @@ import { getAuth ,
 
 const firebaseConfig = {
    apiKey: "AIzaSyDmcdufQ6aznORzbHPTs_CUOs7PSRPqxeg",
-   authDomain: "add-form-data.firebaseapp.com",
-   projectId: "add-form-data",
-   storageBucket: "add-form-data.appspot.com",
-   messagingSenderId: "238751724776",
-   appId: "1:238751724776:web:aed7d9f3f3a0312a3e455d",
-   measurementId: "G-HF10J1TE8E"
+    authDomain: "add-form-data.firebaseapp.com",
+    projectId: "add-form-data",
+    storageBucket: "add-form-data.appspot.com",
+    messagingSenderId: "238751724776",
+    appId: "1:238751724776:web:aed7d9f3f3a0312a3e455d",
+    measurementId: "G-HF10J1TE8E"
    };
 
 // Initialize Firebase

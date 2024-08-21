@@ -16,6 +16,9 @@ import { auth ,
     where 
 } from "../../Utils/utils.js";
 
+import{ showError} from "../../Utils/error.js"
+import{ showSuccess} from "../../Utils/success.js"
+
 
 // Mobile Nav Element 
 const side_navbar = document.getElementById("navbar-cta");
@@ -66,16 +69,12 @@ onAuthStateChanged(auth, (user) => {
     } else {
         user_logout.style.display = "none"
         user_login.style.display = "inline-block"
-        alert("User is signed out")
+        showSuccess("User is signed out")
         window.location.href = "/"
-        //  window.location.href = "/User Login And Signup/Login/index.html";
-        // User is signed out
-        // ...
     }
 })
   
-// const productImag = document.getElementById("productImag")
-// console.log(productImag.file)
+
 const product_add_container = document.getElementById("product_add_container");
 
 product_add_container.addEventListener("submit", (e) => {
@@ -89,7 +88,8 @@ product_add_container.addEventListener("submit", (e) => {
         productImage3: e.target[2].files[0],
         productTitle: e.target[3].value,
         productDesc: e.target[4].value,
-        productAmount: e.target[5].value,
+        category: e.target[5].value,
+        productAmount: e.target[6].value,
         createdBy: auth.currentUser.email,
         createdByUid: auth.currentUser.uid
     };
@@ -127,7 +127,7 @@ product_add_container.addEventListener("submit", (e) => {
         } catch (err) {
             productSaveBtn.disabled = false;
             productSaveBtn.innerText = "Save";
-            console.error("Error uploading images or adding document: ", err);
+            showError("Error uploading images or adding document: ", err);
         }
     };
 
@@ -152,19 +152,23 @@ async function getAllProducts(uid){
             createdBy 
         } =product
       const productCards = `
-      <div class="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-            <img class="h-48 object-cover" style="width:100%" src="${productImage1}" alt="Product Image">
-            <div class="p-4">
-                <h2 class="text-2xl font-semibold mb-2 text-capitalize">${productTitle}</h2>
-                <p class="text-gray-700 mb-4">${productDesc}</p>
-                <p class="text-lg font-bold text-gray-900 mb-2">PKR : ${productAmount}</p>
-                <p class="text-gray-600 mb-4">Uploaded by: <br> ${createdBy}</p>
-                <div class="flex flex-wrap gap-5 justify-center">
-                   <button class="px-6 py-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">Edit</button>
-                   <button class="px-6 py-2 bg-red-600 text-white py-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300" onclick="dltProduct(this)">Delete</button>
+      <div class="max-w-lg mx-auto bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div class="flex flex-col md:flex-row">
+                <img class="h-48 md:h-auto md:w-48 object-cover" src="${productImage1}" alt="Product Image">
+                <div class="p-6 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-black mb-3 capitalize" style="font-family: 'Poppins', sans-serif;">${productTitle}</h2>
+                        <p class="text-gray-600 mb-4 text-sm truncate">${productDesc}</p>
+                        <p class="text-xl font-bold text-orange-600 mb-2">$ ${productAmount}</p>
+                        <p class="text-sm text-gray-500">Uploaded by: <br>${createdBy}</p>
+                    </div>
+                    <div class="flex space-x-4 mt-4">
+                        <button class="flex-1 px-5 py-3 bg-black text-orange-500 font-medium rounded-lg hover:bg-orange-500 hover:text-black focus:outline-none focus:ring-2 focus:ring-orange-300" onclick="dltProduct(this)">Delete</button>
+                    </div>
                 </div>
             </div>
-        </div>`
+        </div>
+        `
         product_card_container.innerHTML += productCards
         productCardArr.push(productCards)
     });
@@ -179,13 +183,13 @@ user_logout.addEventListener("click" , () => {
       console.log("Sign-out successful.")
       // Sign-out successful.
     }).catch((error) => {
-      console.log(error)
+      showError(error)
       // An error happened.
     });
 })
   
 function uploadProductDone(){
-    alert("Your Product Uploaded")
+    showSuccess("Your Product Uploaded")
 }
 
 function getUserInfo(uid){

@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Mochi-pop;
+    src: url(../Fonts/Mochiy_Pop_One/MochiyPopOne-Regular.ttf);
+}
+
 #personal_info_container  {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -8,7 +13,11 @@
     /* align-items: center;
     height: 100vh; */
 }
-
+#userName{
+    font-family: Mochi-pop !important;
+    color: #f97316;
+    text-decoration: underline #f97316;
+}
 .container {
     background-color: #fff;
     padding: 20px;
@@ -16,18 +25,22 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 80%;
     text-align: center;
-    margin-bottom: 30px;
+    margin: 30px 0;
 }
 
 h1 {
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    font-family: Mochi-pop;
+    font-size: 1.5rem;
 }
 
 .user-info {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    gap: 50px;
 }
 
 #profilePage{
@@ -35,39 +48,27 @@ h1 {
     flex-direction: row;
 }
 #profile-picture {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     /* margin-bottom: 20px; */
     margin: 20px 0;
     cursor: pointer;
+    border: 1px solid black;
 }
 
 .user-details p {
+    text-align: start;
+    padding: 10px;
     margin: 10px 0;
+    border-bottom: 1px solid black;
+    border-radius: 5px;
 }
 
 input[type="file"] {
     margin-top: 10px;
 }
 
-#update_button {
-    margin-top: 10px;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#update_button:hover {
-    background-color: #0056b3;
-}
-
-body {
-    font-family: Arial, sans-serif;
-}
 
 .modal{
     display: none; /* Hidden by default */
@@ -76,11 +77,17 @@ body {
     left: 0;
     top: 0;
     width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    height: 90%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0, 0, 0); /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
     transition: all 0.3s ease; /* Fade-in effect */
+}
+.modal img{
+    object-fit: cover;
+    object-position: center;
+    /* width: 100%;
+    height: 100%; */
 }
 
 .modal.show {
@@ -93,7 +100,7 @@ body {
     margin: 0 auto; /*15% from the top and centered*/
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 90%; /* Could be more or less, depending on screen size */
     max-width: 300px;
     text-align: center;
     border-radius: 8px;
@@ -111,7 +118,7 @@ body {
     opacity: 1; /* Final opacity */
 }
 .modal-content > img{
-    width: 200px;
+    /* width: 200px; */
     margin: 20px auto;
 }
 

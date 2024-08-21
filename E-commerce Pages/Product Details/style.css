@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Mochi-pop";
+    src: url(../../Fonts/Mochiy_Pop_One/MochiyPopOne-Regular.ttf);
+}
+
 .carousel-images {
     display: flex;
     flex-wrap: wrap;
@@ -11,7 +16,10 @@
     transition: transform 0.5s ease-in-out;
 }
 
-
+#productCatogery{
+    font-size: 1rem;
+    text-transform: capitalize;
+}
 .modal {
     display: none;
     position: fixed;

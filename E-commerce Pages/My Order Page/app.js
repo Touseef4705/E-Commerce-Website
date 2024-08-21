@@ -10,6 +10,9 @@ import {
   collection,
 } from "../../Utils/utils.js";
 
+import{showSuccess}from "../../Utils/success.js"
+import{showError}from "../../Utils/error.js"
+
 const user_logout = document.getElementById("user_logout");
 const user_login = document.getElementById("user_login");
 const nav_disable = document.querySelectorAll("nav_disable");
@@ -66,7 +69,7 @@ user_login.addEventListener("click", () => {
 
 user_logout.addEventListener("click", () => {
   signOut(auth).then(() => {
-    alert("Sign-out successful.");
+    showSuccess("Sign-out successful.");
   }).catch((error) => {
     console.log(error);
   });
@@ -87,35 +90,36 @@ function loadOrders(uid) {
       const order = doc.data();
       if (order.buyerId === uid) {
         const orderDiv = document.createElement("div");
-        orderDiv.classList.add("order-item", "p-4", "bg-gray-100", "rounded-lg", "flex", "items-center", "justify-between");
+        orderDiv.classList.add("order-item", "p-4", "bg-gray-900", "rounded-lg", "shadow-lg", "flex", "items-center", "justify-between", "hover:shadow-xl", "transition-shadow", "duration-300", "mb-4", "flex-col", "md:flex-row"); // Changed to allow wrapping on smaller screens
 
         const itemDetailsDiv = document.createElement("div");
-        itemDetailsDiv.classList.add("flex", "items-center");
+        itemDetailsDiv.classList.add("flex", "items-center", "w-full", "mb-2", "md:mb-0"); // Added width and margin for responsiveness
 
         const itemImage = document.createElement("img");
         itemImage.src = order.productImage1;
-        itemImage.classList.add("w-16", "h-16", "rounded-lg", "mr-4");
+        itemImage.classList.add("w-16", "h-16", "rounded-lg", "mr-4", "object-cover", "border-2", "border-orange-500");
 
+        // Item Info Div remains unchanged
         const itemInfoDiv = document.createElement("div");
 
         const itemTitle = document.createElement("h3");
-        itemTitle.classList.add("text-lg", "font-bold");
+        itemTitle.classList.add("text-lg", "font-bold", "text-white", "truncate", "text-base", "md:text-lg"); // Responsive text size
         itemTitle.innerText = order.productTitle;
 
         const itemAmount = document.createElement("p");
-        itemAmount.classList.add("text-gray-600");
-        itemAmount.innerText = `PKR: ${order.productAmount}`;
+        itemAmount.classList.add("text-orange-400", "font-semibold", "text-lg", "text-base", "md:text-lg"); // Responsive text size
+        itemAmount.innerText = `$ ${order.totalAmount}`;
 
         const quantityDiv = document.createElement("div");
         quantityDiv.classList.add("flex", "items-center", "mt-2");
 
         const quantityLabel = document.createElement("label");
-        quantityLabel.classList.add("mr-2");
+        quantityLabel.classList.add("mr-2", "text-sm", "text-gray-300");
         quantityLabel.innerText = "Quantity:";
 
         const quantityValue = document.createElement("span");
         quantityValue.innerText = order.quantity || "1";
-        quantityValue.classList.add("w-16", "p-1", "border", "rounded");
+        quantityValue.classList.add("w-16", "p-1", "border", "border-orange-500", "rounded", "text-center", "bg-gray-800", "text-white");
 
         quantityDiv.appendChild(quantityLabel);
         quantityDiv.appendChild(quantityValue);
@@ -128,29 +132,36 @@ function loadOrders(uid) {
         itemDetailsDiv.appendChild(itemInfoDiv);
 
         const cancelButton = document.createElement("button");
-        cancelButton.classList.add("bg-red-500", "text-white", "px-4", "py-2", "rounded-lg", "hover:bg-red-700");
-        cancelButton.innerText = "Cancel Order";
+        cancelButton.classList.add("bg-orange-500", "text-white", "px-4", "py-2", "rounded-lg", "hover:bg-orange-600", "focus:outline-none", "focus:ring-2", "focus:ring-orange-300", "transition-colors", "duration-300", "ml-4");
+
+        const icon = document.createElement("i");
+        icon.classList.add("fa-solid", "fa-trash", "mr-2");
+
+        cancelButton.appendChild(icon);
+        cancelButton.appendChild(document.createTextNode("Cancel"));
+
+        // Append elements
+        orderDiv.appendChild(itemDetailsDiv);
+        orderDiv.appendChild(cancelButton);
         cancelButton.addEventListener("click", () => {
           cancelOrder(doc.id);
         });
 
-        orderDiv.appendChild(itemDetailsDiv);
-        orderDiv.appendChild(cancelButton);
-
         ordersContainer.appendChild(orderDiv);
+
       }
     });
   }).catch((error) => {
-    alert("Error loading orders:", error);
+    showError("Error loading orders:", error);
   });
 }
 
 function cancelOrder(orderId) {
   const orderRef = doc(db, "orders", orderId);
   deleteDoc(orderRef).then(() => {
-    alert("Order canceled successfully!");
+    showSuccess("Order canceled successfully!");
     location.reload();
   }).catch((error) => {
-    alert("Error canceling order:", error);
+    showError("Error canceling order:", error);
   });
 }
